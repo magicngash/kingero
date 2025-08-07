@@ -3,707 +3,656 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cabinet Cutting List Generator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>PureFlow Water Refill - Online Order Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #21B6FF;
+            --primary-dark: #002C8F;
+            --primary-light: #F1F6FB;
+            --whatsapp-color: #25D366;
+            --text-color: #333;
+            --background-color: #f9f9f9;
+            --card-background: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            line-height: 1.6;
+            padding-bottom: 80px; /* Space for fixed button */
         }
-        .tab-content {
-            display: none;
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .tab-content.active {
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: white;
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        /* Section Styles */
+        .section {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+        }
+
+        /* Product Selection Styles */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-image {
+            height: 150px;
+            background-color: var(--primary-light);
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .quantity-selector label {
+            margin-right: 10px;
+            font-weight: 500;
+        }
+
+        .quantity-selector select {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            flex-grow: 1;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
             display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
-        .notification {
-            animation: slideIn 0.3s ease-out;
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
         }
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .required {
+            color: red;
+        }
+
+        /* Order Summary Styles */
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .order-table th,
+        .order-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .order-table th {
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .order-total span:last-child {
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        /* WhatsApp Section Styles */
+        .whatsapp-section {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .whatsapp-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+        }
+
+        .whatsapp-message-preview {
+            background-color: #e9f7ef;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+            border-left: 4px solid #25D366;
+        }
+
+        /* Submit Button Styles */
+        .submit-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25D366;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #128C7E;
+        }
+
+        .submit-button i {
+            margin-right: 10px;
+        }
+
+        /* Fixed WhatsApp Button */
+        .fixed-whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--whatsapp-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .fixed-whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+
+        .fixed-whatsapp-button i {
+            font-size: 30px;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: var(--primary-dark);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: var(--border-radius);
+            margin-top: 30px;
+        }
+
+        .footer-contact {
+            margin-bottom: 20px;
+        }
+
+        .footer-contact p {
+            margin-bottom: 5px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-icons i {
+            font-size: 24px;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            .fixed-whatsapp-button {
+                width: 56px;
+                height: 56px;
+            }
+        }
+
+        /* Mobile-first enhancements */
+        .touch-friendly {
+            min-height: 48px;
+            min-width: 48px;
+        }
+
+        .mobile-input {
+            font-size: 16px; /* Prevents zoom on iOS */
+        }
+
+        .swipeable {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+        }
+
+        .swipeable::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome, Safari, Opera */
         }
     </style>
 </head>
 <body>
-    <div class="min-h-screen bg-gray-100">
-        <!-- Notification Container -->
-        <div id="notificationContainer"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">Cabinet Cutting List Generator</h1>
-                <p class="text-gray-600">Professional tool for generating optimized panel cutting lists</p>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>PureFlow Water Refill</h1>
+            <p>Fresh Water Delivered to Your Doorstep</p>
+        </header>
+
+        <!-- Product Selection Section -->
+        <section class="section">
+            <h2 class="section-title">Select Your Water Products</h2>
+            <div class="product-grid swipeable">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://sfile.chatglm.cn/images-ppt/59114403f523.png" alt="10 Litres Water Bottle">
+                    </div>
+                    <h3 class="product-name">10 Litres Water Bottle</h3>
+                    <p class="product-price">KSh 150 per bottle</p>
+                    <div class="quantity-selector">
+                        <label for="qty-10L">Quantity:</label>
+                        <select id="qty-10L" name="qty-10L" class="touch-friendly">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://sfile.chatglm.cn/images-ppt/c92ea56cc0e1.png" alt="20 Litres Water Bottle">
+                    </div>
+                    <h3 class="product-name">20 Litres Water Bottle</h3>
+                    <p class="product-price">KSh 250 per bottle</p>
+                    <div class="quantity-selector">
+                        <label for="qty-20L">Quantity:</label>
+                        <select id="qty-20L" name="qty-20L" class="touch-friendly">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            
-            <div class="bg-white rounded-lg shadow-sm border">
-                <!-- Tab Navigation -->
-                <div class="border-b border-gray-200">
-                    <nav class="flex space-x-8 px-6">
-                        <button onclick="showTab('input')" class="tab-btn py-4 px-1 border-b-2 font-medium text-sm border-blue-500 text-blue-600" data-tab="input">
-                            Cabinet Input
-                        </button>
-                        <button onclick="showTab('summary')" class="tab-btn py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="summary">
-                            Cutting List
-                        </button>
-                        <button onclick="showTab('projects')" class="tab-btn py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="projects">
-                            My Projects
-                        </button>
-                    </nav>
+        </section>
+
+        <!-- Delivery Details Section -->
+        <section class="section">
+            <h2 class="section-title">Delivery Information</h2>
+            <form id="delivery-form">
+                <div class="form-group">
+                    <label for="full-name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="full-name" name="full-name" required class="mobile-input">
                 </div>
                 
-                <!-- Tab Content -->
-                <div class="p-6">
-                    <!-- Cabinet Input Tab -->
-                    <div id="input-tab" class="tab-content active">
-                        <div class="space-y-6">
-                            <!-- Project Settings -->
-                            <div class="bg-white rounded-lg p-6 shadow-sm border">
-                                <h3 class="text-lg font-semibold mb-4">Project Settings</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Project Name</label>
-                                        <input type="text" id="projectName" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Enter project name" value="New Project">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Panel Thickness (mm)</label>
-                                        <input type="number" id="panelThickness" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" value="18">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Groove Depth (mm)</label>
-                                        <input type="number" id="grooveDepth" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" value="3">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Add Cabinet Form -->
-                            <div class="bg-white rounded-lg p-6 shadow-sm border">
-                                <h3 class="text-lg font-semibold mb-4">Add Cabinet</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Cabinet Name *</label>
-                                        <input type="text" id="cabinetName" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="e.g., Base Cabinet 1">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Width (mm) *</label>
-                                        <input type="number" id="cabinetWidth" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="600">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Height (mm) *</label>
-                                        <input type="number" id="cabinetHeight" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="720">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Depth (mm) *</label>
-                                        <input type="number" id="cabinetDepth" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="560">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Vertical Partitions</label>
-                                        <input type="number" id="verticalPartitions" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" min="0" value="0">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Shelves</label>
-                                        <input type="number" id="shelves" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" min="0" value="0">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Quantity</label>
-                                        <input type="number" id="quantity" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" min="1" value="1">
-                                    </div>
-                                </div>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                    <div class="flex items-center">
-                                        <input type="checkbox" id="backPanel" class="mr-2" checked>
-                                        <label for="backPanel" class="text-sm font-medium">Back Panel</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input type="checkbox" id="door" class="mr-2">
-                                        <label for="door" class="text-sm font-medium">Door</label>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Edging</label>
-                                        <select id="edging" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500">
-                                            <option value="default">Default (Front edges)</option>
-                                            <option value="all">All sides</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <button onclick="addCabinet()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2">
-                                    <i class="fas fa-plus"></i>
-                                    Add Cabinet
-                                </button>
-                            </div>
-
-                            <!-- Current Cabinets -->
-                            <div id="currentCabinets" class="bg-white rounded-lg p-6 shadow-sm border" style="display: none;">
-                                <h3 class="text-lg font-semibold mb-4">Current Cabinets</h3>
-                                <div id="cabinetsList" class="space-y-2"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cutting List Tab -->
-                    <div id="summary-tab" class="tab-content">
-                        <div class="space-y-6">
-                            <div class="bg-white rounded-lg p-6 shadow-sm border">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h3 class="text-lg font-semibold">Project Summary: <span id="summaryProjectName">New Project</span></h3>
-                                    <div class="flex gap-2">
-                                        <button onclick="copyToClipboard()" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-md flex items-center gap-2">
-                                            <i className="fas fa-copy"></i>
-                                            Copy
-                                        </button>
-                                        <button onclick="exportToCSV()" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md flex items-center gap-2">
-                                            <i className="fas fa-download"></i>
-                                            Export CSV
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div id="cuttingListContent">
-                                    <p class="text-gray-600">No cabinets added yet. Go to the Input tab to add cabinets.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Projects Tab -->
-                    <div id="projects-tab" class="tab-content">
-                        <div class="space-y-6">
-                            <div class="bg-white rounded-lg p-6 shadow-sm border">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h3 class="text-lg font-semibold">My Projects</h3>
-                                    <button onclick="saveProject()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2">
-                                        <i className="fas fa-save"></i>
-                                        Save Current Project
-                                    </button>
-                                </div>
-                                
-                                <div id="projectsList">
-                                    <p class="text-gray-600">No saved projects yet.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required class="mobile-input">
                 </div>
+                
+                <div class="form-group">
+                    <label for="address">Delivery Address <span class="required">*</span></label>
+                    <input type="text" id="address" name="address" required class="mobile-input">
+                </div>
+                
+                <div class="form-group">
+                    <label for="delivery-date">Delivery Date</label>
+                    <input type="date" id="delivery-date" name="delivery-date" class="mobile-input">
+                </div>
+                
+                <div class="form-group">
+                    <label for="delivery-time">Delivery Time Preference</label>
+                    <select id="delivery-time" name="delivery-time" class="touch-friendly">
+                        <option value="morning">Morning (8AM - 12PM)</option>
+                        <option value="afternoon">Afternoon (12PM - 5PM)</option>
+                        <option value="evening">Evening (5PM - 8PM)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="instructions">Special Instructions</label>
+                    <textarea id="instructions" name="instructions" placeholder="Any special delivery instructions..." class="mobile-input"></textarea>
+                </div>
+            </form>
+        </section>
+
+        <!-- Order Summary Section -->
+        <section class="section">
+            <h2 class="section-title">Order Summary</h2>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody id="order-items">
+                    <tr>
+                        <td colspan="3">No items selected</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="order-total">
+                <span>Subtotal:</span>
+                <span id="subtotal">KSh 0</span>
             </div>
-        </div>
+            <div class="order-total">
+                <span>Delivery Fee:</span>
+                <span>KSh 100</span>
+            </div>
+            <div class="order-total">
+                <span>Total:</span>
+                <span id="total">KSh 100</span>
+            </div>
+        </section>
+
+        <!-- WhatsApp Integration Section -->
+        <section class="section whatsapp-section">
+            <h2 class="section-title">Send Your Order via WhatsApp</h2>
+            <img src="https://sfile.chatglm.cn/images-ppt/60e394dac8ee.jpg" alt="WhatsApp Integration" class="whatsapp-logo">
+            <p>Your order details will be sent directly to our vendors through WhatsApp for quick processing and confirmation.</p>
+            <div class="whatsapp-message-preview">
+                <p><strong>Order Preview:</strong></p>
+                <p>📦 New Order from PureFlow Water Refill</p>
+                <p>👤 Customer: [Customer Name]</p>
+                <p>📱 Phone: [Phone Number]</p>
+                <p>📍 Address: [Delivery Address]</p>
+                <p>📅 Delivery Date: [Selected Date]</p>
+                <p>⏰ Time: [Selected Time]</p>
+                <p>💰 Total: [Order Total]</p>
+            </div>
+            <button class="submit-button touch-friendly" id="submit-order">
+                <i class="material-icons">send</i>
+                Send Order via WhatsApp
+            </button>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="footer">
+            <div class="footer-contact">
+                <p>📞 +254 712 345 678</p>
+                <p>✉️ info@pureflowwater.co.ke</p>
+                <p>📍 Nairobi, Kenya</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Terms of Service</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">FAQ</a>
+            </div>
+            <div class="social-icons">
+                <i class="material-icons">facebook</i>
+                <i class="material-icons">alternate_email</i>
+                <i class="material-icons">camera_alt</i>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Fixed WhatsApp Button -->
+    <div class="fixed-whatsapp-button touch-friendly" id="fixed-whatsapp-btn">
+        <i class="material-icons">whatsapp</i>
     </div>
 
     <script>
-        // Global state
-        let project = {
-            name: 'New Project',
-            cabinets: [],
-            settings: {
-                panelThickness: 18,
-                grooveDepth: 3
-            }
-        };
-        let savedProjects = [];
-
-        // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
-            loadSavedProjects();
-            updateProjectName();
-        });
+            const products = [
+                { id: 'qty-10L', name: '10 Litres Water Bottle', price: 150 },
+                { id: 'qty-20L', name: '20 Litres Water Bottle', price: 250 }
+            ];
 
-        // Load saved projects from localStorage
-        function loadSavedProjects() {
-            try {
-                const saved = localStorage.getItem('cabinetProjects');
-                if (saved) {
-                    savedProjects = JSON.parse(saved);
-                    displayProjects();
-                }
-            } catch (e) {
-                console.error('Error loading projects:', e);
-            }
-        }
+            const orderItems = document.getElementById('order-items');
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total');
+            const submitButton = document.getElementById('submit-order');
+            const fixedWhatsappBtn = document.getElementById('fixed-whatsapp-btn');
 
-        // Show notification
-        function showNotification(message, type = 'info') {
-            const container = document.getElementById('notificationContainer');
-            const notification = document.createElement('div');
-            notification.className = `notification fixed top-4 right-4 px-4 py-2 rounded-md text-white z-50 ${
-                type === 'success' ? 'bg-green-500' : 
-                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
-            }`;
-            notification.textContent = message;
-            container.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
+            function updateOrderSummary() {
+                let subtotal = 0;
+                let orderHTML = '';
+                let hasItems = false;
 
-        // Tab navigation
-        function showTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Remove active class from all tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('border-blue-500', 'text-blue-600');
-                btn.classList.add('border-transparent', 'text-gray-500');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName + '-tab').classList.add('active');
-            
-            // Add active class to selected tab button
-            const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
-            activeBtn.classList.remove('border-transparent', 'text-gray-500');
-            activeBtn.classList.add('border-blue-500', 'text-blue-600');
-            
-            // Update cutting list if summary tab is shown
-            if (tabName === 'summary') {
-                updateCuttingList();
-            }
-        }
-
-        // Update project name
-        function updateProjectName() {
-            const projectNameInput = document.getElementById('projectName');
-            projectNameInput.addEventListener('input', function() {
-                project.name = this.value;
-                document.getElementById('summaryProjectName').textContent = this.value;
-            });
-        }
-
-        // Add cabinet
-        function addCabinet() {
-            const name = document.getElementById('cabinetName').value.trim();
-            const width = parseInt(document.getElementById('cabinetWidth').value) || 0;
-            const height = parseInt(document.getElementById('cabinetHeight').value) || 0;
-            const depth = parseInt(document.getElementById('cabinetDepth').value) || 0;
-            const verticalPartitions = parseInt(document.getElementById('verticalPartitions').value) || 0;
-            const shelves = parseInt(document.getElementById('shelves').value) || 0;
-            const backPanel = document.getElementById('backPanel').checked;
-            const door = document.getElementById('door').checked;
-            const edging = document.getElementById('edging').value;
-            const quantity = parseInt(document.getElementById('quantity').value) || 1;
-
-            // Validation
-            if (!name) {
-                showNotification('Cabinet name is required', 'error');
-                return;
-            }
-            if (width <= 0 || height <= 0 || depth <= 0) {
-                showNotification('Valid dimensions are required', 'error');
-                return;
-            }
-
-            // Add cabinet
-            const cabinet = {
-                id: Date.now(),
-                name,
-                width,
-                height,
-                depth,
-                verticalPartitions,
-                shelves,
-                backPanel,
-                door,
-                edging,
-                quantity
-            };
-
-            project.cabinets.push(cabinet);
-            displayCabinets();
-            clearCabinetForm();
-            showNotification('Cabinet added successfully!', 'success');
-        }
-
-        // Display cabinets
-        function displayCabinets() {
-            const container = document.getElementById('currentCabinets');
-            const list = document.getElementById('cabinetsList');
-            
-            if (project.cabinets.length === 0) {
-                container.style.display = 'none';
-                return;
-            }
-            
-            container.style.display = 'block';
-            list.innerHTML = '';
-            
-            project.cabinets.forEach(cabinet => {
-                const item = document.createElement('div');
-                item.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-md';
-                item.innerHTML = `
-                    <div>
-                        <span class="font-medium">${cabinet.name}</span>
-                        <span class="text-gray-600 ml-2">
-                            ${cabinet.width}×${cabinet.height}×${cabinet.depth}mm
-                            ${cabinet.quantity > 1 ? `(×${cabinet.quantity})` : ''}
-                        </span>
-                    </div>
-                    <button onclick="removeCabinet(${cabinet.id})" class="text-red-600 hover:text-red-800">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                `;
-                list.appendChild(item);
-            });
-        }
-
-        // Remove cabinet
-        function removeCabinet(id) {
-            project.cabinets = project.cabinets.filter(c => c.id !== id);
-            displayCabinets();
-            showNotification('Cabinet removed', 'info');
-        }
-
-        // Clear cabinet form
-        function clearCabinetForm() {
-            document.getElementById('cabinetName').value = '';
-            document.getElementById('cabinetWidth').value = '';
-            document.getElementById('cabinetHeight').value = '';
-            document.getElementById('cabinetDepth').value = '';
-            document.getElementById('verticalPartitions').value = '0';
-            document.getElementById('shelves').value = '0';
-            document.getElementById('backPanel').checked = true;
-            document.getElementById('door').checked = false;
-            document.getElementById('edging').value = 'default';
-            document.getElementById('quantity').value = '1';
-        }
-
-        // Calculate panels for a cabinet
-        function calculatePanels(cabinet, settings) {
-            const panels = [];
-            const { width, height, depth, verticalPartitions, shelves, backPanel, door, quantity } = cabinet;
-            const { panelThickness, grooveDepth } = settings;
-            
-            const actualDepth = backPanel ? depth - grooveDepth : depth;
-            
-            // Top and Bottom panels
-            panels.push({
-                name: 'Top Panel',
-                width: width,
-                height: actualDepth,
-                quantity: quantity,
-                edging: cabinet.edging === 'all' ? 'All sides' : 'Front edge'
-            });
-            
-            panels.push({
-                name: 'Bottom Panel',
-                width: width,
-                height: actualDepth,
-                quantity: quantity,
-                edging: cabinet.edging === 'all' ? 'All sides' : 'Front edge'
-            });
-            
-            // Side panels
-            panels.push({
-                name: 'Side Panel',
-                width: actualDepth,
-                height: height - (2 * panelThickness),
-                quantity: quantity * 2,
-                edging: cabinet.edging === 'all' ? 'All sides' : 'Front edge'
-            });
-            
-            // Vertical partitions
-            if (verticalPartitions > 0) {
-                panels.push({
-                    name: 'Vertical Partition',
-                    width: actualDepth,
-                    height: height - (2 * panelThickness),
-                    quantity: quantity * verticalPartitions,
-                    edging: cabinet.edging === 'all' ? 'All sides' : 'Front edge'
-                });
-            }
-            
-            // Shelves
-            if (shelves > 0) {
-                const shelfWidth = Math.floor((width - (2 * panelThickness) - (verticalPartitions * panelThickness)) / (verticalPartitions + 1));
-                if (shelfWidth > 0) {
-                    panels.push({
-                        name: 'Shelf',
-                        width: shelfWidth,
-                        height: actualDepth,
-                        quantity: quantity * shelves * (verticalPartitions + 1),
-                        edging: cabinet.edging === 'all' ? 'All sides' : 'Front edge'
-                    });
-                }
-            }
-            
-            // Back panel
-            if (backPanel) {
-                panels.push({
-                    name: 'Back Panel',
-                    width: width,
-                    height: height,
-                    quantity: quantity,
-                    edging: 'None'
-                });
-            }
-            
-            // Door
-            if (door) {
-                panels.push({
-                    name: 'Door',
-                    width: width - 6,
-                    height: height - 6,
-                    quantity: quantity,
-                    edging: 'All sides'
-                });
-            }
-            
-            return panels;
-        }
-
-        // Update cutting list
-        function updateCuttingList() {
-            const content = document.getElementById('cuttingListContent');
-            
-            if (project.cabinets.length === 0) {
-                content.innerHTML = '<p class="text-gray-600">No cabinets added yet. Go to the Input tab to add cabinets.</p>';
-                return;
-            }
-            
-            // Get all panels
-            const allPanels = [];
-            project.cabinets.forEach(cabinet => {
-                const cabinetPanels = calculatePanels(cabinet, project.settings);
-                cabinetPanels.forEach(panel => {
-                    panel.cabinetName = cabinet.name;
-                    allPanels.push(panel);
-                });
-            });
-            
-            // Combine identical panels
-            const summary = {};
-            allPanels.forEach(panel => {
-                const key = `${panel.width}x${panel.height}-${panel.edging}`;
-                if (summary[key]) {
-                    summary[key].quantity += panel.quantity;
-                    summary[key].usedIn.push(panel.cabinetName);
-                } else {
-                    summary[key] = { ...panel, usedIn: [panel.cabinetName] };
-                }
-            });
-            
-            const sortedPanels = Object.values(summary).sort((a, b) => b.width * b.height - a.width * a.height);
-            
-            // Generate table
-            let tableHTML = `
-                <div class="overflow-x-auto">
-                    <table class="w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="border border-gray-300 px-4 py-2 text-left">Panel Name</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Width (mm)</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Height (mm)</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Quantity</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Edging</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Used In</th>
+                products.forEach(product => {
+                    const quantity = parseInt(document.getElementById(product.id).value);
+                    if (quantity > 0) {
+                        hasItems = true;
+                        const itemTotal = quantity * product.price;
+                        subtotal += itemTotal;
+                        orderHTML += `
+                            <tr>
+                                <td>${product.name}</td>
+                                <td>${quantity}</td>
+                                <td>KSh ${itemTotal}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-            `;
-            
-            sortedPanels.forEach((panel, index) => {
-                tableHTML += `
-                    <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
-                        <td class="border border-gray-300 px-4 py-2">${panel.name}</td>
-                        <td class="border border-gray-300 px-4 py-2">${panel.width}</td>
-                        <td class="border border-gray-300 px-4 py-2">${panel.height}</td>
-                        <td class="border border-gray-300 px-4 py-2">${panel.quantity}</td>
-                        <td class="border border-gray-300 px-4 py-2">${panel.edging}</td>
-                        <td class="border border-gray-300 px-4 py-2">${panel.usedIn.join(', ')}</td>
-                    </tr>
-                `;
-            });
-            
-            tableHTML += `
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            
-            content.innerHTML = tableHTML;
-        }
-
-        // Copy to clipboard
-        function copyToClipboard() {
-            if (project.cabinets.length === 0) {
-                showNotification('No cabinets to copy', 'error');
-                return;
-            }
-            
-            let text = `${project.name} - Cutting List\n\n`;
-            text += 'Panel Name\tWidth (mm)\tHeight (mm)\tQuantity\tEdging\n';
-            
-            // Get all panels and combine
-            const allPanels = [];
-            project.cabinets.forEach(cabinet => {
-                const cabinetPanels = calculatePanels(cabinet, project.settings);
-                cabinetPanels.forEach(panel => {
-                    panel.cabinetName = cabinet.name;
-                    allPanels.push(panel);
+                        `;
+                    }
                 });
+
+                if (!hasItems) {
+                    orderHTML = '<tr><td colspan="3">No items selected</td></tr>';
+                }
+
+                orderItems.innerHTML = orderHTML;
+                subtotalElement.textContent = `KSh ${subtotal}`;
+                totalElement.textContent = `KSh ${subtotal + 100}`;
+            }
+
+            // Add event listeners to all quantity selectors
+            products.forEach(product => {
+                document.getElementById(product.id).addEventListener('change', updateOrderSummary);
             });
-            
-            const summary = {};
-            allPanels.forEach(panel => {
-                const key = `${panel.width}x${panel.height}-${panel.edging}`;
-                if (summary[key]) {
-                    summary[key].quantity += panel.quantity;
+
+            // Initialize order summary
+            updateOrderSummary();
+
+            // Handle form submission
+            function submitOrder() {
+                const form = document.getElementById('delivery-form');
+                if (form.checkValidity()) {
+                    // Get order details
+                    let orderDetails = "📦 New Order from PureFlow Water Refill\n\n";
+                    
+                    // Add customer details
+                    orderDetails += `👤 Customer: ${document.getElementById('full-name').value}\n`;
+                    orderDetails += `📱 Phone: ${document.getElementById('phone').value}\n`;
+                    orderDetails += `📍 Address: ${document.getElementById('address').value}\n`;
+                    
+                    // Add delivery details
+                    const deliveryDate = document.getElementById('delivery-date').value;
+                    if (deliveryDate) {
+                        orderDetails += `📅 Delivery Date: ${deliveryDate}\n`;
+                    }
+                    
+                    const deliveryTime = document.getElementById('delivery-time').value;
+                    const deliveryTimeText = document.getElementById('delivery-time').options[document.getElementById('delivery-time').selectedIndex].text;
+                    orderDetails += `⏰ Time: ${deliveryTimeText}\n`;
+                    
+                    // Add special instructions if any
+                    const instructions = document.getElementById('instructions').value;
+                    if (instructions) {
+                        orderDetails += `📝 Instructions: ${instructions}\n`;
+                    }
+                    
+                    // Add order items
+                    orderDetails += "\n🛒 Order Items:\n";
+                    let hasItems = false;
+                    
+                    products.forEach(product => {
+                        const quantity = parseInt(document.getElementById(product.id).value);
+                        if (quantity > 0) {
+                            hasItems = true;
+                            const itemTotal = quantity * product.price;
+                            orderDetails += `${product.name} x${quantity} = KSh ${itemTotal}\n`;
+                        }
+                    });
+                    
+                    if (!hasItems) {
+                        alert('Please select at least one water bottle.');
+                        return;
+                    }
+                    
+                    // Add total
+                    const subtotalText = subtotalElement.textContent;
+                    const totalText = totalElement.textContent;
+                    orderDetails += `\n💰 Subtotal: ${subtotalText}`;
+                    orderDetails += `\n💰 Delivery Fee: KSh 100`;
+                    orderDetails += `\n💰 Total: ${totalText}`;
+                    
+                    // Encode the message for WhatsApp URL
+                    const encodedMessage = encodeURIComponent(orderDetails);
+                    const whatsappURL = `https://wa.me/254712345678?text=${encodedMessage}`;
+                    
+                    // Open WhatsApp with the message
+                    window.open(whatsappURL, '_blank');
                 } else {
-                    summary[key] = { ...panel };
-                }
-            });
-            
-            Object.values(summary).forEach(panel => {
-                text += `${panel.name}\t${panel.width}\t${panel.height}\t${panel.quantity}\t${panel.edging}\n`;
-            });
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showNotification('Cutting list copied to clipboard!', 'success');
-            }).catch(() => {
-                showNotification('Failed to copy to clipboard', 'error');
-            });
-        }
-
-        // Export to CSV
-        function exportToCSV() {
-            if (project.cabinets.length === 0) {
-                showNotification('No cabinets to export', 'error');
-                return;
-            }
-            
-            let csv = 'Panel Name,Width (mm),Height (mm),Quantity,Edging,Used In\n';
-            
-            // Get all panels and combine
-            const allPanels = [];
-            project.cabinets.forEach(cabinet => {
-                const cabinetPanels = calculatePanels(cabinet, project.settings);
-                cabinetPanels.forEach(panel => {
-                    panel.cabinetName = cabinet.name;
-                    allPanels.push(panel);
-                });
-            });
-            
-            const summary = {};
-            allPanels.forEach(panel => {
-                const key = `${panel.width}x${panel.height}-${panel.edging}`;
-                if (summary[key]) {
-                    summary[key].quantity += panel.quantity;
-                    summary[key].usedIn.push(panel.cabinetName);
-                } else {
-                    summary[key] = { ...panel, usedIn: [panel.cabinetName] };
-                }
-            });
-            
-            Object.values(summary).forEach(panel => {
-                csv += `"${panel.name}",${panel.width},${panel.height},${panel.quantity},"${panel.edging}","${panel.usedIn.join(', ')}"\n`;
-            });
-            
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${project.name.replace(/\s+/g, '_')}_cutting_list.csv`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showNotification('CSV exported successfully!', 'success');
-        }
-
-        // Save project
-        function saveProject() {
-            if (!project.name.trim()) {
-                showNotification('Please enter a project name', 'error');
-                return;
-            }
-            
-            try {
-                const updated = [...savedProjects];
-                const index = updated.findIndex(p => p.name === project.name);
-                
-                if (index >= 0) {
-                    updated[index] = { ...project, lastModified: new Date().toISOString() };
-                } else {
-                    updated.push({ ...project, lastModified: new Date().toISOString() });
-                }
-                
-                savedProjects = updated;
-                localStorage.setItem('cabinetProjects', JSON.stringify(updated));
-                displayProjects();
-                showNotification('Project saved successfully!', 'success');
-            } catch (e) {
-                showNotification('Error saving project', 'error');
-            }
-        }
-
-        // Display projects
-        function displayProjects() {
-            const container = document.getElementById('projectsList');
-            
-            if (savedProjects.length === 0) {
-                container.innerHTML = '<p class="text-gray-600">No saved projects yet.</p>';
-                return;
-            }
-            
-            container.innerHTML = '';
-            
-            savedProjects.forEach((savedProject, index) => {
-                const item = document.createElement('div');
-                item.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-md';
-                item.innerHTML = `
-                    <div>
-                        <h4 class="font-medium">${savedProject.name}</h4>
-                        <p class="text-sm text-gray-600">
-                            ${savedProject.cabinets.length} cabinet${savedProject.cabinets.length !== 1 ? 's' : ''}
-                            ${savedProject.lastModified ? `• Last modified: ${new Date(savedProject.lastModified).toLocaleDateString()}` : ''}
-                        </p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="loadProject(${index})" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md flex items-center gap-1">
-                            <i className="fas fa-folder-open"></i>
-                            Load
-                        </button>
-                        <button onclick="deleteProject(${index})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md">
-                            <i className="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        // Load project
-        function loadProject(index) {
-            project = { ...savedProjects[index] };
-            
-            // Update form fields
-            document.getElementById('projectName').value = project.name;
-            document.getElementById('panelThickness').value = project.settings.panelThickness;
-            document.getElementById('grooveDepth').value = project.settings.grooveDepth;
-            
-            // Update display
-            displayCabinets();
-            document.getElementById('summaryProjectName').textContent = project.name;
-            
-            // Switch to input tab
-            showTab('input');
-            showNotification('Project loaded successfully!', 'success');
-        }
-
-        // Delete project
-        function deleteProject(index) {
-            if (confirm('Are you sure you want to delete this project?')) {
-                try {
-                    savedProjects.splice(index, 1);
-                    localStorage.setItem('cabinetProjects', JSON.stringify(savedProjects));
-                    displayProjects();
-                    showNotification('Project deleted successfully!', 'success');
-                } catch (e) {
-                    showNotification('Error deleting project', 'error');
+                    form.reportValidity();
                 }
             }
-        }
+
+            submitButton.addEventListener('click', submitOrder);
+            fixedWhatsappBtn.addEventListener('click', submitOrder);
+        });
     </script>
 </body>
 </html>
